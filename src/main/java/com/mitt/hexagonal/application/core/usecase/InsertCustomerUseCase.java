@@ -1,22 +1,23 @@
 package com.mitt.hexagonal.application.core.usecase;
 
 import com.mitt.hexagonal.application.core.domain.Customer;
-import com.mitt.hexagonal.application.ports.out.IFindAdressByZipCodeOutputPort;
+import com.mitt.hexagonal.application.ports.in.InsertCustomerInputPort;
+import com.mitt.hexagonal.application.ports.out.FindAddressByZipCodeOutputPort;
 import com.mitt.hexagonal.application.ports.out.InsertCustomerOutputPort;
 
-public class InsertCustomerUseCase {
+public class InsertCustomerUseCase implements InsertCustomerInputPort {
 
-    private final IFindAdressByZipCodeOutputPort findAddressByZipCodeUseCase;
+    private final FindAddressByZipCodeOutputPort findAddressByZipCodeUseCase;
     private final InsertCustomerOutputPort insertCustomerOutputPort;
 
-    public InsertCustomerUseCase(IFindAdressByZipCodeOutputPort findAddressByZipCodeUseCase, InsertCustomerOutputPort insertCustomerOutputPort) {
+    public InsertCustomerUseCase(FindAddressByZipCodeOutputPort findAddressByZipCodeUseCase, InsertCustomerOutputPort insertCustomerOutputPort) {
         this.findAddressByZipCodeUseCase = findAddressByZipCodeUseCase;
         this.insertCustomerOutputPort = insertCustomerOutputPort;
     }
-
+    @Override
     public void insert(Customer customer, String zipCode){
-        var adress= findAddressByZipCodeUseCase.find(zipCode);
-        customer.setAddress(adress);
+        var address = findAddressByZipCodeUseCase.find(zipCode);
+        customer.setAddress(address);
         insertCustomerOutputPort.insert(customer);
     }
 }
