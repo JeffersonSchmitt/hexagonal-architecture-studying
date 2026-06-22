@@ -3,14 +3,12 @@ package com.mitt.hexagonal.adapters.out;
 import com.mitt.hexagonal.adapters.out.repository.CustomerRepository;
 import com.mitt.hexagonal.adapters.out.repository.mapper.CustomerEntityMapper;
 import com.mitt.hexagonal.application.core.domain.Customer;
-import com.mitt.hexagonal.application.ports.out.FindCustomerByIdOutputPort;
+import com.mitt.hexagonal.application.ports.out.UpdateCustomerOutputPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
-public class FindCustomerByIdAdapter implements FindCustomerByIdOutputPort {
+public class UpdateCustomerAdapter implements UpdateCustomerOutputPort {
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -19,8 +17,8 @@ public class FindCustomerByIdAdapter implements FindCustomerByIdOutputPort {
     private CustomerEntityMapper customerEntityMapper;
 
     @Override
-    public Optional<Customer> find(String id) {
-        var customerEntity= customerRepository.findById(id);
-        return customerEntity.map(entity-> customerEntityMapper.toCustomer(entity));
+    public void update(Customer customer) {
+    var customerEntity= customerEntityMapper.toCustomerEntity(customer);
+    customerRepository.save(customerEntity);
     }
 }

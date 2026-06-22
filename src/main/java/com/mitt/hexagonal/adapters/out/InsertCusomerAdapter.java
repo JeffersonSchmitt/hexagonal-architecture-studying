@@ -1,6 +1,6 @@
 package com.mitt.hexagonal.adapters.out;
 
-import com.mitt.hexagonal.adapters.out.repository.CustomerRespository;
+import com.mitt.hexagonal.adapters.out.repository.CustomerRepository;
 import com.mitt.hexagonal.adapters.out.repository.mapper.CustomerEntityMapper;
 import com.mitt.hexagonal.application.core.domain.Customer;
 import com.mitt.hexagonal.application.ports.out.InsertCustomerOutputPort;
@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 public class InsertCusomerAdapter implements InsertCustomerOutputPort {
 
     @Autowired
-    private CustomerRespository customerRespository;
+    private CustomerRepository customerRepository;
     @Autowired
     private CustomerEntityMapper customerEntityMapper;
 
     @Override
     public void insert(Customer customer) {
         var customerEntity = customerEntityMapper.toCustomerEntity(customer);
-        customerRespository.save(customerEntity);
+        customerRepository.save(customerEntity);
     }
 }
